@@ -91,6 +91,14 @@ class FeedbackTest {
         );
     }
 
+    @Test
+    @DisplayName("Feedback does have the same size as the attempt and there wont be an exeption")
+    void validLenght() {
+        assertDoesNotThrow(() -> new Feedback("board", "baard"));
+    }
+
+
+
 //    @Test
 //    @DisplayName("Feedback does not have the same size as the attempt")
 //    void validLenght() {
