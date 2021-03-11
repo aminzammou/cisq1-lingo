@@ -25,7 +25,6 @@ public class Round {
     }
 
     public String guessing(String guess) {
-        // TODO: if attempt.size == 0 then firstHint()
         if (this.status != GameState.PLAYING){
            throw new GameEndedException();
         }
