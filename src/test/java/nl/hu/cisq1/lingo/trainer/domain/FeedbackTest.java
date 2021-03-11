@@ -7,11 +7,31 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FeedbackTest {
+
+    @ParameterizedTest
+    @MethodSource("feedbackMarks")
+    void testMarks(List<Mark> generatedMarks, List<Mark> expectedMarks) {
+        assertEquals(expectedMarks, generatedMarks);
+    }
+
+    static Stream<Arguments> feedbackMarks() {
+        return Stream.of(
+                Arguments.of(new Feedback("BAARD","BONJE").getMarks(), List.of(Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
+                Arguments.of(new Feedback("BAARD","BARST").getMarks(), List.of(Mark.CORRECT, Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
+                Arguments.of(new Feedback("BAADD","DRAAD").getMarks(), List.of(Mark.PRESENT, Mark.ABSENT, Mark.CORRECT, Mark.PRESENT, Mark.CORRECT)),
+                Arguments.of(new Feedback("BAROK","ZWAAR").getMarks(), List.of(Mark.ABSENT, Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT)),
+                Arguments.of(new Feedback("AARDEN","APAALM").getMarks(), List.of(Mark.CORRECT, Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
+                Arguments.of(new Feedback("BAARD","BAARD").getMarks(), List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
+                Arguments.of(new Feedback("ARARA","BAROK").getMarks(), List.of(Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT))
+        );
+    }
+
     @Test
     @DisplayName("word is guessed if all letters are correct")
     void wordIsGuessed() {

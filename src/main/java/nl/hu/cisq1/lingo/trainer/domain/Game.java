@@ -50,6 +50,10 @@ public class Game {
         this.score = 5 * (5 - round.getAttemptLenght()) * 5;
     }
 
+    public int getAmountOfRoundes(){
+        return rondes.size();
+    }
+
 
 
 }
