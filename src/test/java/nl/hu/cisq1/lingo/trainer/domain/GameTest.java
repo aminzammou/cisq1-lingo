@@ -1,9 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLenght;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import nl.hu.cisq1.lingo.trainer.domain.exception.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,6 +68,18 @@ class GameTest {
         );
     }
 
+    @Test
+    @DisplayName("the user cant make a new guess when the round has already ended")
+    void RoundHasBeenEnded(){
+        String fiveLetterWord = "hallo";
+        game.StartNewGame(fiveLetterWord);
+        game.guess(fiveLetterWord);
+        assertThrows(
+                GameEndedException.class,
+                () ->  game.guess(fiveLetterWord)
+        );
+    }
+
 //    @ParameterizedTest
 //    @MethodSource("score")
 //    @DisplayName("score increases")
@@ -86,7 +95,7 @@ class GameTest {
 //    static Stream<Arguments> score() {
 //        return Stream.of(
 //                Arguments.of("baard",125),
-//                Arguments.of("baarde",50),
+//                Arguments.of("baarde",250),
 //                Arguments.of("baarden",75)
 //        );
 //    }
