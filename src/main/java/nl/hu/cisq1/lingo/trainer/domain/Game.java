@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
 import net.bytebuddy.implementation.bytecode.Throw;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLenght;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
 
@@ -37,6 +38,9 @@ public class Game {
     }
 
     public String guess(String guess){
+        if (getAmountOfRoundes() == 0){
+            throw new GameHasNotBeenStartedExeption();
+        }
         Round round = rondes.get(rondes.size() -1);
         calculateScore();
         return round.guessing(guess);

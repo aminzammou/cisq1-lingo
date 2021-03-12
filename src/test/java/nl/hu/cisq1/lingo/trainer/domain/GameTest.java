@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLenght;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
@@ -59,7 +60,17 @@ class GameTest {
         );
     }
 
-    //Test score
+    @Test
+    @DisplayName("the user cant guess a word when a game has not been started yet")
+    void gameHasNotBeenStartedYed(){
+        String fiveLetterWord = "hallo";
+
+        assertThrows(
+                GameHasNotBeenStartedExeption.class,
+                () ->  game.guess(fiveLetterWord)
+        );
+    }
+
 //    @ParameterizedTest
 //    @MethodSource("score")
 //    @DisplayName("score increases")
