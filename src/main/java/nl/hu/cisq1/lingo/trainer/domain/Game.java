@@ -70,5 +70,12 @@ public class Game {
         return rounds.size();
     }
 
+    public ArrayList<String> getAttampts() {
+        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
+    }
 
+
+    private void updateprogress() {
+        new Progress(this.score,getAttampts(),getAmountOfRounds());
+    }
 }
