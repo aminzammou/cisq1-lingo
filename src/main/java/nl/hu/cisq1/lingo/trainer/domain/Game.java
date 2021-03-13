@@ -1,9 +1,8 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
-import net.bytebuddy.implementation.bytecode.Throw;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLenght;
+import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
 
 import java.util.ArrayList;
@@ -12,60 +11,64 @@ import java.util.List;
 @Getter
 public class Game {
     private int score;
-    private List<Round> rondes;
-    private int wordLenght;
+    private List<Round> rounds;
+    private int wordLength;
 
-    public Game(){
+    public Game() {
         this.score = 0;
-        this.wordLenght = 5;
-        this.rondes = new ArrayList<>();
+        this.wordLength = 5;
+        this.rounds = new ArrayList<>();
     }
 
-    public String StartNewGame(String wordToGuess){
-        if (wordToGuess.length() != wordLenght){
-            throw new InvalidWordLenght();
+    public String startNewGame(String wordToGuess) {
+        if (wordToGuess.length() != wordLength) {
+            throw new InvalidWordLength();
         }
-        if (getAmountOfRoundes() == 1){
-            if (rondes.get(rondes.size() - 1).getStatus() == GameState.PLAYING ){
+
+        if (getAmountOfRounds() == 1) {
+            if (rounds.get(rounds.size() - 1).getStatus() == GameState.PLAYING) {
                 throw new RoundPlayingExeption();
             }
         }
 
         Round round = new Round(wordToGuess);
-        rondes.add(round);
-        getNextWordLenght();
+        rounds.add(round);
+        getNextWordLength();
+
         return round.firstHint();
     }
 
-    public String guess(String guess){
-        if (getAmountOfRoundes() == 0){
+    public String guess(String guess) {
+        if (getAmountOfRounds() == 0) {
             throw new GameHasNotBeenStartedExeption();
         }
-        Round round = rondes.get(rondes.size() -1);
+
+        Round round = rounds.get(rounds.size() - 1);
         calculateScore();
+
         return round.guessing(guess);
     }
 
-    public void getNextWordLenght(){
-        int wordToGuessLenght = rondes.get(rondes.size() -1).getCurrentWordLenght();
-        if (wordToGuessLenght == 7){
-            this.wordLenght = 5;
-        }else if (wordToGuessLenght == 6){
-            this.wordLenght = 7;
-        }else {
-            this.wordLenght = 6;
+    public void getNextWordLength() {
+        int wordToGuessLength = rounds.get(rounds.size() - 1).getCurrentWordLength();
+
+        if (wordToGuessLength == 7) {
+            this.wordLength = 5;
+        } else if (wordToGuessLength == 6) {
+            this.wordLength = 7;
+        } else {
+            this.wordLength = 6;
         }
     }
 
-    public void calculateScore(){
-        Round round = rondes.get(rondes.size() -1);
-        this.score = 5 * (5 - round.getAttemptLenght()) * 5;
+    public void calculateScore() {
+        Round round = rounds.get(rounds.size() - 1);
+        this.score = 5 * (5 - round.getAttemptLength()) + 5;
     }
 
-    public int getAmountOfRoundes(){
-        return rondes.size();
+    public int getAmountOfRounds() {
+        return rounds.size();
     }
-
 
 
 }

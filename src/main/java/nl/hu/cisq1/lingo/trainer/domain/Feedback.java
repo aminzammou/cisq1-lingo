@@ -34,15 +34,21 @@ public class Feedback {
         List<Mark> markList = new ArrayList<>();
 
         if (awnserLetters.length != attemptLetters.length) {
-//            markList.add(Mark.INVALID);
             isWordInvalid();
         }
+        List<String> presentLetters = new ArrayList<>();
 
         for (int i = 0; i < awnserLetters.length; i++) {
             if (awnserLetters[i].equals(attemptLetters[i])) {
                 markList.add(Mark.CORRECT);
             } else if (Arrays.asList(awnserLetters).contains(attemptLetters[i])) {
-                markList.add(Mark.PRESENT);
+                if (presentLetters.contains(attemptLetters[i])){
+                    markList.add(Mark.ABSENT);
+                }else {
+                    presentLetters.add(attemptLetters[i]);
+                    markList.add(Mark.PRESENT);
+                }
+
             } else {
                 markList.add(Mark.ABSENT);
             }

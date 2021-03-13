@@ -24,8 +24,8 @@ class GameTest {
     @DisplayName("incorrect amount of letters in the word to guess")
     void wordToGuessInvalidLenght(){
         assertThrows(
-                InvalidWordLenght.class,
-                () -> game.StartNewGame("kat")
+                InvalidWordLength.class,
+                () -> game.startNewGame("kat")
         );
     }
 
@@ -33,7 +33,7 @@ class GameTest {
     @DisplayName("correct amount of letters in the word to guess")
     void wordToGuessValidLenght(){
         assertDoesNotThrow(
-                () -> game.StartNewGame("katte")
+                () -> game.startNewGame("katte")
         );
     }
 
@@ -41,19 +41,19 @@ class GameTest {
     @DisplayName("next amount of letters")
     void WordToGuessIncreased(){
         String fiveLetterWord = "hallo";
-        game.StartNewGame(fiveLetterWord);
+        game.startNewGame(fiveLetterWord);
         game.guess(fiveLetterWord);
-      assertEquals(game.getWordLenght(),6);
+      assertEquals(game.getWordLength(),6);
     }
 
     @Test
     @DisplayName("the user cant start a new game when the last round is still playing")
     void RoundIsStillPlaying(){
         String fiveLetterWord = "hallo";
-        game.StartNewGame(fiveLetterWord);
+        game.startNewGame(fiveLetterWord);
         assertThrows(
                 RoundPlayingExeption.class,
-                () ->  game.StartNewGame("welkom")
+                () ->  game.startNewGame("welkom")
         );
     }
 
@@ -72,7 +72,7 @@ class GameTest {
     @DisplayName("the user cant make a new guess when the round has already ended")
     void RoundHasBeenEnded(){
         String fiveLetterWord = "hallo";
-        game.StartNewGame(fiveLetterWord);
+        game.startNewGame(fiveLetterWord);
         game.guess(fiveLetterWord);
         assertThrows(
                 GameEndedException.class,
@@ -80,24 +80,30 @@ class GameTest {
         );
     }
 
-//    @ParameterizedTest
-//    @MethodSource("score")
-//    @DisplayName("score increases")
-//    void correctScore(String WordToGuess, int expectedScore) {
-//        game.StartNewGame(WordToGuess);
-//        game.guess(WordToGuess);
-//
-//        assertEquals(game.getScore(), expectedScore);
-//
-//    }
-//
-//
-//    static Stream<Arguments> score() {
-//        return Stream.of(
-//                Arguments.of("baard",125),
-//                Arguments.of("baarde",250),
-//                Arguments.of("baarden",75)
-//        );
-//    }
+    @ParameterizedTest
+    @MethodSource("scorePerRound")
+    @DisplayName("calculate score based on the amount of attempts in a round")
+    void correctScore(int amountOfAttempts, int expectedScore) {
+        game.startNewGame("woord");
+
+        for (int i = 0; i < amountOfAttempts - 1; i++) {
+            game.guess("words");
+        }
+
+        game.guess("woord");
+
+        assertEquals(game.getScore(), expectedScore);
+    }
+
+
+    static Stream<Arguments> scorePerRound() {
+        return Stream.of(
+                Arguments.of(1, 30),
+                Arguments.of(2, 25),
+                Arguments.of(3, 20),
+                Arguments.of(4, 15),
+                Arguments.of(5, 10)
+        );
+    }
 
 }
