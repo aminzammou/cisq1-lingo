@@ -25,17 +25,17 @@ public class Round {
     }
 
     public String guessing(String guess) {
-        // TODO: if attempt.size == 0 then firstHint()
-        if (this.status != GameState.PLAYING){
-           throw new GameEndedException();
+        if (this.status != GameState.PLAYING) {
+            throw new GameEndedException();
         }
+
         Feedback feedback = new Feedback(this.wordToGuess, guess);
         this.history.add(feedback);
         String hint = giveHint();
 
         if (feedback.isWordGuessed()) {
             this.status = GameState.WON;
-        } else if (getAttemptLenght() == 5) {
+        } else if (getAttemptLength() == 5) {
             this.status = GameState.ELIMINATED;
         } else {
             this.status = GameState.PLAYING;
@@ -44,20 +44,16 @@ public class Round {
         return hint;
     }
 
-    public String giveHint(){
-        String hint;
-        if (this.attempts.size() == 0){
-            hint = firstHint();
-        }else{
-            Feedback feedback = history.get(history.size() - 1);
-            if (getAttemptLenght() == 1){
-                hint = feedback.getHint(this.attempts.get(0));
-            }else{
-                hint = feedback.getHint(this.attempts.get(getAttemptLenght() -1));
-            }
+    public String giveHint() {
+        String hint = firstHint();
 
+        if (this.attempts.size() > 0) {
+            Feedback feedback = history.get(history.size() - 1);
+            hint = feedback.getHint(this.attempts.get(getAttemptLength() - 1));
         }
+
         this.attempts.add(hint);
+
         return hint;
     }
 
@@ -67,11 +63,12 @@ public class Round {
         return hint;
     }
 
-    public int getCurrentWordLenght(){
+    public int getCurrentWordLength() {
         String[] lettersToGuess = wordToGuess.split("");
         return lettersToGuess.length;
     }
-    public int getAttemptLenght(){
+
+    public int getAttemptLength() {
         return this.attempts.size();
     }
 }

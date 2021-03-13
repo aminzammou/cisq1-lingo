@@ -6,6 +6,7 @@ import lombok.ToString;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,15 +29,21 @@ public class Feedback {
         List<Mark> markList = new ArrayList<>();
 
         if (awnserLetters.length != attemptLetters.length) {
-//            markList.add(Mark.INVALID);
             isWordInvalid();
         }
+        List<String> presentLetters = new ArrayList<>();
 
         for (int i = 0; i < awnserLetters.length; i++) {
             if (awnserLetters[i].equals(attemptLetters[i])) {
                 markList.add(Mark.CORRECT);
-            } else if (awnserLetters[i].contains(attemptLetters[i])) {
-                markList.add(Mark.PRESENT);
+            } else if (Arrays.asList(awnserLetters).contains(attemptLetters[i])) {
+                if (presentLetters.contains(attemptLetters[i])){
+                    markList.add(Mark.ABSENT);
+                }else {
+                    presentLetters.add(attemptLetters[i]);
+                    markList.add(Mark.PRESENT);
+                }
+
             } else {
                 markList.add(Mark.ABSENT);
             }
