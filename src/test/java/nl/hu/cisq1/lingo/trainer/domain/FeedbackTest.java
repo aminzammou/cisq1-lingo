@@ -128,20 +128,6 @@ class FeedbackTest {
 //                () -> new Feedback("woerd", "woord")
 //        );
 //    }
-//    @ParameterizedTest
-//    @DisplayName("the user guessed some letters of the word")
-//    @MethodSource("provideHints")
-//    void giveHint(String hint, String testHint){
-//        assertEquals(hint,testHint);
-//    }
-//
-//    private static Stream<Arguments> provideHints(){
-//        return Stream.of(
-//                Arguments.of("h..l.","h..l."),
-//                Arguments.of("ha.l.","h..l."),
-//                Arguments.of("h..lo","h..lo")
-//        );
-//    }
 
     @ParameterizedTest
     @DisplayName("the user guessed some letters of the word")
