@@ -159,5 +159,4 @@ class FeedbackTest {
                 Arguments.of("baard", "baard", "b.a.d", "baard")
         );
     }
-
 }
