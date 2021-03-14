@@ -5,11 +5,12 @@ import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Game {
+public class Game implements Serializable {
     private int score;
     private List<Round> rounds;
     private int wordLength;
