@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Game implements Serializable {
+public class Game {
     private int score;
     private List<Round> rounds;
     private int wordLength;
