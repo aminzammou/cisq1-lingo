@@ -1,17 +1,17 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
+import lombok.Value;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @ToString
 @Getter
+@EqualsAndHashCode
 public class Feedback {
     private final List<Mark> marks;
     private String attempt;
@@ -23,31 +23,37 @@ public class Feedback {
         this.marks = makeGuess(attempt, wordToGuess);
     }
 
-    private List<Mark> makeGuess(String attenpt, String wordToGuess) {
-        String[] attemptLetters = attenpt.split("");
-        String[] awnserLetters = wordToGuess.split("");
+    private List<Mark> makeGuess(String attempt, String wordToGuess) {
+        String[] attemptLetters = attempt.split("");
+        String[] answerLetters = wordToGuess.split("");
         List<Mark> markList = new ArrayList<>();
 
-        if (awnserLetters.length != attemptLetters.length) {
+        if (answerLetters.length != attemptLetters.length) {
             isWordInvalid();
         }
+
         List<String> presentLetters = new ArrayList<>();
 
-        for (int i = 0; i < awnserLetters.length; i++) {
-            if (awnserLetters[i].equals(attemptLetters[i])) {
+        for (int i = 0; i < answerLetters.length; i++) {
+            if (answerLetters[i].equals(attemptLetters[i])) {
                 markList.add(Mark.CORRECT);
-            } else if (Arrays.asList(awnserLetters).contains(attemptLetters[i])) {
-                if (presentLetters.contains(attemptLetters[i])){
-                    markList.add(Mark.ABSENT);
-                }else {
-                    presentLetters.add(attemptLetters[i]);
-                    markList.add(Mark.PRESENT);
-                }
-
             } else {
-                markList.add(Mark.ABSENT);
+                presentLetters.add(answerLetters[i]);
+                markList.add(null);
             }
         }
+
+        for (int i = 0; i < answerLetters.length; i++) {
+            if (markList.get(i) != Mark.CORRECT) {
+                if (presentLetters.contains(attemptLetters[i])) {
+                    markList.set(i, Mark.PRESENT);
+                    presentLetters.remove(attemptLetters[i]);
+                } else {
+                    markList.set(i, Mark.ABSENT);
+                }
+            }
+         }
+
         return markList;
     }
 
@@ -58,26 +64,6 @@ public class Feedback {
 
     public void isWordInvalid() {
         throw new InvalidFeedbackException();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Feedback feedback = (Feedback) o;
-        return Objects.equals(marks, feedback.marks);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(marks);
-    }
-
-    @Override
-    public String toString() {
-        return "Feedback{" +
-                "marks=" + marks +
-                '}';
     }
 
     public String getHint(String oldHint) {

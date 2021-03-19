@@ -10,28 +10,30 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static nl.hu.cisq1.lingo.trainer.domain.Mark.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FeedbackTest {
 
-//    @ParameterizedTest
-//    @MethodSource("feedbackMarks")
-//    void testMarks(List<Mark> generatedMarks, List<Mark> expectedMarks) {
-//        assertEquals(expectedMarks, generatedMarks);
-//    }
-//
-//    static Stream<Arguments> feedbackMarks() {
-//        return Stream.of(
-//                Arguments.of(new Feedback("BAARD","BONJE").getMarks(), List.of(Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
-//                Arguments.of(new Feedback("BAARD","BARST").getMarks(), List.of(Mark.CORRECT, Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
-//                Arguments.of(new Feedback("BAADD","DRAAD").getMarks(), List.of(Mark.PRESENT, Mark.ABSENT, Mark.CORRECT, Mark.PRESENT, Mark.CORRECT)),
-//                Arguments.of(new Feedback("BAROK","ZWAAR").getMarks(), List.of(Mark.ABSENT, Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT)),
-//                Arguments.of(new Feedback("AARDEN","APAALM").getMarks(), List.of(Mark.CORRECT, Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
-//                Arguments.of(new Feedback("BAARD","BAARD").getMarks(), List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
-//                Arguments.of(new Feedback("BAROK", "ARARA"), List.of(Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT))
-//                Arguments.of(new Feedback("ARARA","BAROK").getMarks(), List.of(Mark.ABSENT, Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT))
-//        );
-//    }
+    @ParameterizedTest
+    @MethodSource("feedbackMarks")
+    void testMarks(String wordToGuess, String attempt, List<Mark> expectedMarks) {
+        Feedback feedback = new Feedback(wordToGuess, attempt);
+        assertEquals(expectedMarks, feedback.getMarks());
+    }
+
+    static Stream<Arguments> feedbackMarks() {
+        return Stream.of(
+                Arguments.of("BAARD","BONJE", List.of(CORRECT, ABSENT, ABSENT, ABSENT, ABSENT)),
+                Arguments.of("BAARD","BARST", List.of(CORRECT, CORRECT, PRESENT, ABSENT, ABSENT)),
+                Arguments.of("BAARD","DRAAD", List.of(ABSENT, PRESENT, CORRECT, PRESENT, CORRECT)),
+                Arguments.of("BAARD","BAARD", List.of(CORRECT, CORRECT, CORRECT, CORRECT, CORRECT)),
+                Arguments.of("BAROK","BAARD", List.of(CORRECT, CORRECT, ABSENT, PRESENT, ABSENT)),
+                Arguments.of("BAROK","ZWAAR", List.of(ABSENT, ABSENT, PRESENT, ABSENT, PRESENT)),
+                Arguments.of("AARDEN","APAALM", List.of(CORRECT, ABSENT, PRESENT, ABSENT, ABSENT, ABSENT)),
+                Arguments.of("BAROK", "ARARA", List.of(PRESENT, PRESENT, ABSENT, ABSENT, ABSENT))
+        );
+    }
 
     @Test
     @DisplayName("word is guessed if all letters are correct")
