@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.application;
 
 import lombok.AllArgsConstructor;
-import nl.hu.cisq1.lingo.trainer.data.GameEntity;
 import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
 import nl.hu.cisq1.lingo.words.application.WordService;
@@ -13,10 +12,10 @@ public class TrainerService {
 
     public Long startNewGame() {
         Game game = new Game();
-        GameEntity gameEntity = new GameEntity(game);
-        this.gameRepository.save(gameEntity);
+//        GameEntity gameEntity = new GameEntity(game);
+        this.gameRepository.save(game);
 
-        return gameEntity.getId();
+        return game.getId();
     }
 
 }

@@ -4,15 +4,30 @@ import lombok.Getter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Entity
 public class Game implements Serializable {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private int score;
-    private List<Round> rounds;
+
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    private final List<Round> rounds;
+
     private int wordLength;
 
     public Game() {
@@ -71,7 +86,7 @@ public class Game implements Serializable {
         return rounds.size();
     }
 
-    public ArrayList<String> getAttampts() {
+    public List<String> getAttampts() {
         return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
     }
 

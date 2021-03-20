@@ -1,20 +1,37 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameEndedException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
-public class Round {
+@Entity
+@NoArgsConstructor
+public class Round implements Serializable {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String wordToGuess;
     private int roundNumber;
     private GameState status;
+
+    @ElementCollection
+    private List<String> attempts;
+
+    @OneToMany
+    @Cascade(CascadeType.ALL)
     private List<Feedback> history;
-    private ArrayList<String> attempts;
+
+
 
     public Round(String wordToGuess) {
         this.wordToGuess = wordToGuess;

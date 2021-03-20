@@ -1,19 +1,28 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @ToString
 @Getter
 @EqualsAndHashCode
-public class Feedback {
-    private final List<Mark> marks;
+@Entity
+@NoArgsConstructor
+public class Feedback implements Serializable {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ElementCollection
+    private List<Mark> marks;
     private String attempt;
     private String wordToGuess;
 
