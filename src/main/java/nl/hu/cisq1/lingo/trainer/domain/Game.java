@@ -29,6 +29,7 @@ public class Game implements Serializable {
     private final List<Round> rounds;
 
     private int wordLength;
+    private String currentHint;
 
     public Game() {
         this.score = 0;
@@ -91,7 +92,8 @@ public class Game implements Serializable {
     }
 
 
-    private void updateprogress() {
-        new Progress(this.score,getAttampts(),getAmountOfRounds());
+
+    private Progress showProgress() {
+        return new Progress(this.score, getAttampts(),getAmountOfRounds());
     }
 }

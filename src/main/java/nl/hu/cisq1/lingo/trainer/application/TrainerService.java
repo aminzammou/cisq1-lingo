@@ -7,8 +7,8 @@ import nl.hu.cisq1.lingo.words.application.WordService;
 
 @AllArgsConstructor
 public class TrainerService {
-    private WordService wordService;
-    private SpringGameRepository gameRepository;
+    private final WordService wordService;
+    private final SpringGameRepository gameRepository;
 
     public Long startNewGame() {
         Game game = new Game();

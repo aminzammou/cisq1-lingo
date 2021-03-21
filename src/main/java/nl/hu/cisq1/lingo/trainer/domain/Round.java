@@ -77,6 +77,7 @@ public class Round implements Serializable {
     public String firstHint() {
         String[] lettersToGuess = wordToGuess.split("");
         String hint = lettersToGuess[0] + ".".repeat(lettersToGuess.length - 1);
+//        this.attempts.add(hint);
         return hint;
     }
 
