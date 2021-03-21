@@ -37,7 +37,7 @@ public class Game implements Serializable {
         this.rounds = new ArrayList<>();
     }
 
-    public String startNewGame(String wordToGuess) {
+    public Progress startNewGame(String wordToGuess) {
         if (wordToGuess.length() != wordLength) {
             throw new InvalidWordLength();
         }
@@ -51,19 +51,21 @@ public class Game implements Serializable {
         Round round = new Round(wordToGuess);
         rounds.add(round);
         getNextWordLength();
+        round.firstHint();
 
-        return round.firstHint();
+        return showProgress();
     }
 
-    public String guess(String guess) {
+    public Progress guess(String guess) {
         if (getAmountOfRounds() == 0) {
             throw new GameHasNotBeenStartedExeption();
         }
 
         Round round = rounds.get(rounds.size() - 1);
         calculateScore();
+        round.guessing(guess);
 
-        return round.guessing(guess);
+        return showProgress();
     }
 
     public void getNextWordLength() {
