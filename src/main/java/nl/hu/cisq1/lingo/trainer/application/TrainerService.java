@@ -11,8 +11,16 @@ public class TrainerService {
     private final WordService wordService;
     private final SpringGameRepository gameRepository;
 
-    public Progress startNewGame() {
+    public Long startNewGame() {
         Game game = new Game();
+
+        this.gameRepository.save(game);
+
+        return game.getId();
+    }
+
+    public Progress startNewRound(Long id) {
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
         String wordToGuess = this.wordService.provideRandomWord(game.getWordLength());
         Progress progress = game.startNewGame(wordToGuess);
         this.gameRepository.save(game);

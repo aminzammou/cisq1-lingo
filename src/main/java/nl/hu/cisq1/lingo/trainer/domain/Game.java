@@ -42,7 +42,7 @@ public class Game implements Serializable {
             throw new InvalidWordLength();
         }
 
-        if (getAmountOfRounds() == 1) {
+        if (getAmountOfRounds() >= 1) {
             if (rounds.get(rounds.size() - 1).getStatus() == GameState.PLAYING) {
                 throw new RoundPlayingExeption();
             }
