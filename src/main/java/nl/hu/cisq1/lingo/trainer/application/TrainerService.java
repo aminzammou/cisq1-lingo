@@ -13,10 +13,19 @@ public class TrainerService {
 
     public Progress startNewGame() {
         Game game = new Game();
-
-        this.gameRepository.save(game);
         String wordToGuess = this.wordService.provideRandomWord(game.getWordLength());
-        return game.startNewGame(wordToGuess);
+        Progress progress = game.startNewGame(wordToGuess);
+        this.gameRepository.save(game);
+
+        return progress;
+    }
+
+    public Progress guess(long id,String guess) {
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
+        Progress progress = game.guess(guess);
+        this.gameRepository.save(game);
+
+        return progress;
     }
 
 
