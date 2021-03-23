@@ -47,7 +47,6 @@ public class Game implements Serializable {
                 throw new RoundPlayingExeption();
             }
         }
-
         Round round = new Round(wordToGuess);
         rounds.add(round);
         getNextWordLength();
