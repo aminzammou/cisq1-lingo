@@ -20,7 +20,12 @@ public class TrainerController {
     }
 
     @PostMapping("/game//{id}")
-    public Progress createNewGame(@PathVariable Long id) {
+    public Progress createNewRound(@PathVariable Long id) {
         return service.startNewRound(id);
+    }
+
+    @PostMapping("/game//{id}/{attempt}")
+    public Progress guess(@PathVariable Long id, @PathVariable String attempt) {
+        return service.guess(id,attempt);
     }
 }

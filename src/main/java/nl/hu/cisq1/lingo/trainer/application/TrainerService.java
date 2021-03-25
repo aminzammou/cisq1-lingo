@@ -28,7 +28,7 @@ public class TrainerService {
         return progress;
     }
 
-    public Progress guess(long id,String guess) {
+    public Progress guess(Long id,String guess) {
         Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
         Progress progress = game.guess(guess);
         this.gameRepository.save(game);
