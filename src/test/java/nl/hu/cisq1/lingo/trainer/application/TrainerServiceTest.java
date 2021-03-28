@@ -21,7 +21,6 @@ class TrainerServiceTest {
 
     @BeforeEach
     void before() {
-        // Test game
         Game game = new Game();
         wordService = mock(WordService.class);
 
@@ -34,7 +33,6 @@ class TrainerServiceTest {
 
         // Trainer
         service = new TrainerService(wordService, gameRepository);
-//        service.startNewGame();
     }
 
 

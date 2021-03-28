@@ -11,4 +11,9 @@ public class Progress {
     private int score;
     private List<String> hints;
     private int roundNumber;
+    private GameState status;
+
+    public String getCurrentHint(){
+        return hints.get(hints.size() - 1);
+    }
 }

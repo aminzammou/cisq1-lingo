@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Round implements Serializable {
+public class Round {
     @Id
     @GeneratedValue
     private Long id;

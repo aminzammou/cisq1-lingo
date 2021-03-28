@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @NoArgsConstructor
-public class Feedback implements Serializable {
+public class Feedback {
     @Id
     @GeneratedValue
     private Long id;
