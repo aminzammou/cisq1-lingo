@@ -25,9 +25,9 @@ public class TrainerService {
 
     public Progress startNewRound(Long id) {
         Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
-        if (game.getStatus().equals(GameState.ELIMINATED)){
-            throw new RuntimeException("You cant play, you lost this game !");
-        }
+//        if (game.getStatus().equals(GameState.ELIMINATED)){
+//            throw new RuntimeException("You cant play, you lost this game !");
+//        }
 
         String wordToGuess = this.wordService.provideRandomWord(game.getWordLength());
         Progress progress = game.startNewGame(wordToGuess);

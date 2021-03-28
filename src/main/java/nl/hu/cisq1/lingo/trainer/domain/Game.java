@@ -45,10 +45,10 @@ public class Game implements Serializable {
             }
         }
         Round round = new Round(wordToGuess);
-        rounds.add(round);
+        this.rounds.add(round);
         getNextWordLength();
         round.firstHint();
-
+        System.out.println(this.rounds.size());
         return showProgress();
     }
 
@@ -90,6 +90,7 @@ public class Game implements Serializable {
     }
 
     public Round getCurrentRound(){
+//        System.out.println(this.rounds.size());
         return rounds.get(rounds.size() - 1);
     }
     public GameState getStatus(){
