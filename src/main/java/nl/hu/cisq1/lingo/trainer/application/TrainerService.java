@@ -6,6 +6,8 @@ import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
 import nl.hu.cisq1.lingo.trainer.domain.GameState;
 import nl.hu.cisq1.lingo.trainer.domain.Progress;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameNotFoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,11 @@ public class TrainerService {
         return game.getId();
     }
 
-    public Progress startNewRound(Long id) {
-        Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
-//        if (game.getStatus().equals(GameState.ELIMINATED)){
-//            throw new RuntimeException("You cant play, you lost this game !");
-//        }
+    public Progress startNewRound(Long id) throws LostGameException, GameNotFoundException {
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException("Game Not found"));
+        if (game.getStatus().equals(GameState.ELIMINATED)){
+            throw new LostGameException("You cant play, you lost this game !");
+        }
 
         String wordToGuess = this.wordService.provideRandomWord(game.getWordLength());
         Progress progress = game.startNewGame(wordToGuess);
@@ -36,8 +38,11 @@ public class TrainerService {
         return progress;
     }
 
-    public Progress guess(Long id, String guess) {
+    public Progress guess(Long id, String guess) throws LostGameException {
         Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
+        if (game.getStatus().equals(GameState.ELIMINATED)){
+            throw new LostGameException("You cant play, you lost this game !");
+        }
         Progress progress = game.guess(guess);
         this.gameRepository.save(game);
 
