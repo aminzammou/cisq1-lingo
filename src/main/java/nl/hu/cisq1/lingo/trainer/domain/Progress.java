@@ -8,12 +8,10 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class Progress {
+    private Long gameId;
     private int score;
-    private List<String> hints;
     private int roundNumber;
     private GameState status;
-
-    public String getCurrentHint(){
-        return hints.get(hints.size() - 1);
-    }
+    private List<Feedback> history;
+    private String hint;
 }

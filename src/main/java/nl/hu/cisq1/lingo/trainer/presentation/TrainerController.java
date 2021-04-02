@@ -7,6 +7,7 @@ import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
 import nl.hu.cisq1.lingo.trainer.presentation.dto.AttemptDTO;
+import nl.hu.cisq1.lingo.trainer.presentation.dto.NewGameDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,12 @@ public class TrainerController {
     }
 
     @PostMapping("/game")
-    public Long createNewGame() {
-       return this.service.startNewGame();
+    public NewGameDTO createNewGame() {
+        NewGameDTO newGameDTO = new NewGameDTO(this.service.startNewGame());
+       return newGameDTO;
     }
 
-    @PostMapping("/game/{id}")
+    @PostMapping("/game/{id}/round")
     public Progress createNewRound(@PathVariable Long id) throws GameNotFoundException, LostGameException, RoundPlayingExeption {
         return service.startNewRound(id);
     }

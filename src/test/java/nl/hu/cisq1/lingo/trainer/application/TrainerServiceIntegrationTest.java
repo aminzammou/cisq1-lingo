@@ -3,6 +3,8 @@ package nl.hu.cisq1.lingo.trainer.application;
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.trainer.domain.GameState;
 import nl.hu.cisq1.lingo.trainer.domain.Progress;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameNotFoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class TrainerServiceIntegrationTest {
 
     @Test
     @DisplayName("Starting a new round")
-    void startNewRound(){
+    void startNewRound() throws LostGameException, GameNotFoundException {
         Long id = trainerService.startNewGame();
         Progress progress = trainerService.startNewRound(id);
 

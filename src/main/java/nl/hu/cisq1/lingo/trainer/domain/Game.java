@@ -34,7 +34,7 @@ public class Game implements Serializable {
         this.rounds = new ArrayList<>();
     }
 
-    public Progress startNewGame(String wordToGuess) {
+    public Progress startNewRound(String wordToGuess) {
         if (wordToGuess.length() != wordLength) {
             throw new InvalidWordLength();
         }
@@ -47,8 +47,9 @@ public class Game implements Serializable {
         Round round = new Round(wordToGuess);
         this.rounds.add(round);
         getNextWordLength();
-        round.firstHint();
+        currentHint = round.firstHint();
         System.out.println(this.rounds.size());
+
         return showProgress();
     }
 
@@ -59,7 +60,7 @@ public class Game implements Serializable {
 
         Round round = rounds.get(rounds.size() - 1);
         calculateScore();
-        round.guessing(guess);
+        currentHint = round.guessing(guess);
 
         return showProgress();
     }
@@ -85,19 +86,23 @@ public class Game implements Serializable {
         return rounds.size();
     }
 
-    public List<String> getAttempts() {
-        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
-    }
+//    public List<String> getAttempts() {
+//        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
+//    }
 
     public Round getCurrentRound(){
 //        System.out.println(this.rounds.size());
-        return rounds.get(rounds.size() - 1);
+        if (rounds.size() == 0){
+            return null;
+        }else{
+            return rounds.get(rounds.size() - 1);
+        }
     }
     public GameState getStatus(){
         return getCurrentRound().getStatus();
     }
 
     private Progress showProgress() {
-        return new Progress(this.score, getAttempts(), getAmountOfRounds(),getStatus());
+        return new Progress(id,this.score,getAmountOfRounds(),getStatus(),getCurrentRound().getHistory(),currentHint);
     }
 }

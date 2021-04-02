@@ -2,9 +2,7 @@ package nl.hu.cisq1.lingo.trainer.application;
 
 import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameEndedException;
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import nl.hu.cisq1.lingo.trainer.domain.exception.*;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,14 +49,14 @@ class TrainerServiceTest {
 
     @Test
     @DisplayName("Game has already been started")
-    void gameHasAlreayStarted() {
+    void gameHasAlreayStarted() throws GameNotFoundException, LostGameException {
         service.startNewRound(0L);
         assertThrows(RoundPlayingExeption.class, () -> service.startNewRound(0L));
     }
 
     @Test
     @DisplayName("Game has already been ended")
-    void gameHasAlreayBeenEnded() {
+    void gameHasAlreayBeenEnded() throws GameNotFoundException, LostGameException {
         service.startNewRound(0L);
         for (int i = 0; i < 6 - 1; i++) {
             service.guess(0l,"board");

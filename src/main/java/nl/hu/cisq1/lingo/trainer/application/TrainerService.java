@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.application;
 
 import lombok.AllArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
 import nl.hu.cisq1.lingo.trainer.domain.GameState;
@@ -26,13 +25,17 @@ public class TrainerService {
     }
 
     public Progress startNewRound(Long id) throws LostGameException, GameNotFoundException {
-        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException("Game Not found"));
-        if (game.getStatus().equals(GameState.ELIMINATED)){
-            throw new LostGameException("You cant play, you lost this game !");
+        Game game = this.gameRepository.findById(id)
+                .orElseThrow(() -> new GameNotFoundException("Game Not found"));
+
+        if (game.getCurrentRound() != null){
+            if (game.getStatus().equals(GameState.ELIMINATED)){
+                throw new LostGameException("You cant play, you lost this game !");
+            }
         }
 
         String wordToGuess = this.wordService.provideRandomWord(game.getWordLength());
-        Progress progress = game.startNewGame(wordToGuess);
+        Progress progress = game.startNewRound(wordToGuess);
         this.gameRepository.save(game);
 
         return progress;
@@ -40,8 +43,10 @@ public class TrainerService {
 
     public Progress guess(Long id, String guess) throws LostGameException {
         Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
-        if (game.getStatus().equals(GameState.ELIMINATED)){
-            throw new LostGameException("You cant play, you lost this game !");
+        if (game.getCurrentRound() != null){
+            if (game.getStatus().equals(GameState.ELIMINATED)){
+                throw new LostGameException("You cant play, you lost this game !");
+            }
         }
         Progress progress = game.guess(guess);
         this.gameRepository.save(game);
