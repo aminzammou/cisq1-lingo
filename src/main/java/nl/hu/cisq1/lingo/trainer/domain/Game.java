@@ -47,7 +47,7 @@ public class Game implements Serializable {
         Round round = new Round(wordToGuess);
         this.rounds.add(round);
         getNextWordLength();
-        currentHint = round.firstHint();
+        currentHint = round.getHint();
         System.out.println(this.rounds.size());
 
         return showProgress();
@@ -79,7 +79,7 @@ public class Game implements Serializable {
 
     public void calculateScore() {
         Round round = rounds.get(rounds.size() - 1);
-        this.score = 5 * (5 - round.getAttemptLength()) + 5;
+        this.score = 5 * (5 - round.getAttemptLength() - 1) + 5;
     }
 
     public int getAmountOfRounds() {

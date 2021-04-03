@@ -92,17 +92,17 @@ class GameTest {
 
         game.guess("woord");
 
-        assertEquals(game.getScore(), expectedScore);
+        assertEquals(expectedScore, game.getScore());
     }
 
 
     static Stream<Arguments> scorePerRound() {
         return Stream.of(
-                Arguments.of(1, 30),
-                Arguments.of(2, 25),
-                Arguments.of(3, 20),
-                Arguments.of(4, 15),
-                Arguments.of(5, 10)
+                Arguments.of(1, 25),
+                Arguments.of(2, 20),
+                Arguments.of(3, 15),
+                Arguments.of(4, 10),
+                Arguments.of(5, 5)
         );
     }
 

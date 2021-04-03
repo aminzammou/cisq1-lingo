@@ -23,6 +23,7 @@ public class Round {
     private String wordToGuess;
     private int roundNumber;
     private GameState status;
+    private String hint;
 
     @ElementCollection
     private List<String> attempts;
@@ -39,6 +40,7 @@ public class Round {
         this.status = GameState.PLAYING;
         this.history = new ArrayList<>();
         this.attempts = new ArrayList<>();
+        setFirstHint();
     }
 
     public String guessing(String guess) {
@@ -62,23 +64,19 @@ public class Round {
     }
 
     public String giveHint() {
-        String hint = firstHint();
 
-        if (this.attempts.size() > 0) {
+        if (this.history.size() > 0) {
             Feedback feedback = history.get(history.size() - 1);
-            hint = feedback.getHint(this.attempts.get(getAttemptLength() - 1));
+            this.hint = feedback.getHint(this.hint);
         }
+        this.attempts.add(this.hint);
 
-        this.attempts.add(hint);
-
-        return hint;
+        return this.hint;
     }
 
-    public String firstHint() {
+    public void setFirstHint() {
         String[] lettersToGuess = wordToGuess.split("");
-        String hint = lettersToGuess[0] + ".".repeat(lettersToGuess.length - 1);
-//        this.attempts.add(hint);
-        return hint;
+        this.hint = lettersToGuess[0] + ".".repeat(lettersToGuess.length - 1);
     }
 
     public int getCurrentWordLength() {
