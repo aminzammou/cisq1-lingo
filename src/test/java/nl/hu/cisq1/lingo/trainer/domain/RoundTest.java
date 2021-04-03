@@ -20,8 +20,8 @@ class RoundTest {
     @DisplayName("when the first guess has been made")
     void firstguess() {
         Round round = new Round("baard");
-        round.guessing("board");
-        assertEquals(round.giveHint(), "b.ard");
+        String guess = round.guessing("board");
+        assertEquals(guess, "b.ard");
     }
 
     @Test

@@ -4,16 +4,28 @@ import lombok.Getter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Game {
+@Entity
+public class Game implements Serializable {
+    @Id
+    @GeneratedValue
+    private Long id;
     private int score;
-    private List<Round> rounds;
+
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    private final List<Round> rounds;
+
     private int wordLength;
+    private String currentHint;
 
     public Game() {
         this.score = 0;
@@ -21,33 +33,35 @@ public class Game {
         this.rounds = new ArrayList<>();
     }
 
-    public String startNewGame(String wordToGuess) {
+    public Progress startNewRound(String wordToGuess) {
         if (wordToGuess.length() != wordLength) {
             throw new InvalidWordLength();
         }
 
-        if (getAmountOfRounds() == 1) {
+        if (getAmountOfRounds() >= 1) {
             if (rounds.get(rounds.size() - 1).getStatus() == GameState.PLAYING) {
                 throw new RoundPlayingExeption();
             }
         }
-
         Round round = new Round(wordToGuess);
-        rounds.add(round);
+        this.rounds.add(round);
         getNextWordLength();
+        currentHint = round.getHint();
+        System.out.println(this.rounds.size());
 
-        return round.firstHint();
+        return showProgress();
     }
 
-    public String guess(String guess) {
+    public Progress guess(String guess) {
         if (getAmountOfRounds() == 0) {
             throw new GameHasNotBeenStartedExeption();
         }
 
         Round round = rounds.get(rounds.size() - 1);
         calculateScore();
+        currentHint = round.guessing(guess);
 
-        return round.guessing(guess);
+        return showProgress();
     }
 
     public void getNextWordLength() {
@@ -64,19 +78,30 @@ public class Game {
 
     public void calculateScore() {
         Round round = rounds.get(rounds.size() - 1);
-        this.score = 5 * (5 - round.getAttemptLength()) + 5;
+        this.score = 5 * (5 - round.getAttemptLength() - 1) + 5;
     }
 
     public int getAmountOfRounds() {
         return rounds.size();
     }
 
-    public ArrayList<String> getAttampts() {
-        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
+//    public List<String> getAttempts() {
+//        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
+//    }
+
+    public Round getCurrentRound(){
+//        System.out.println(this.rounds.size());
+        if (rounds.size() == 0){
+            return null;
+        }else{
+            return rounds.get(rounds.size() - 1);
+        }
+    }
+    public GameState getStatus(){
+        return getCurrentRound().getStatus();
     }
 
-
-    private void updateprogress() {
-        new Progress(this.score,getAttampts(),getAmountOfRounds());
+    private Progress showProgress() {
+        return new Progress(id,this.score,getAmountOfRounds(),getStatus(),getCurrentRound().getHistory(),currentHint);
     }
 }

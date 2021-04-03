@@ -1,20 +1,38 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameEndedException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
+@Entity
+@NoArgsConstructor
 public class Round {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String wordToGuess;
     private int roundNumber;
     private GameState status;
+    private String hint;
+
+    @ElementCollection
+    private List<String> attempts;
+
+    @OneToMany
+    @Cascade(CascadeType.ALL)
     private List<Feedback> history;
-    private ArrayList<String> attempts;
+
+
 
     public Round(String wordToGuess) {
         this.wordToGuess = wordToGuess;
@@ -22,6 +40,7 @@ public class Round {
         this.status = GameState.PLAYING;
         this.history = new ArrayList<>();
         this.attempts = new ArrayList<>();
+        setFirstHint();
     }
 
     public String guessing(String guess) {
@@ -45,22 +64,19 @@ public class Round {
     }
 
     public String giveHint() {
-        String hint = firstHint();
 
-        if (this.attempts.size() > 0) {
+        if (this.history.size() > 0) {
             Feedback feedback = history.get(history.size() - 1);
-            hint = feedback.getHint(this.attempts.get(getAttemptLength() - 1));
+            this.hint = feedback.getHint(this.hint);
         }
+        this.attempts.add(this.hint);
 
-        this.attempts.add(hint);
-
-        return hint;
+        return this.hint;
     }
 
-    public String firstHint() {
+    public void setFirstHint() {
         String[] lettersToGuess = wordToGuess.split("");
-        String hint = lettersToGuess[0] + ".".repeat(lettersToGuess.length - 1);
-        return hint;
+        this.hint = lettersToGuess[0] + ".".repeat(lettersToGuess.length - 1);
     }
 
     public int getCurrentWordLength() {

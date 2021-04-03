@@ -25,7 +25,7 @@ class GameTest {
     void wordToGuessInvalidLenght(){
         assertThrows(
                 InvalidWordLength.class,
-                () -> game.startNewGame("kat")
+                () -> game.startNewRound("kat")
         );
     }
 
@@ -33,7 +33,7 @@ class GameTest {
     @DisplayName("correct amount of letters in the word to guess")
     void wordToGuessValidLenght(){
         assertDoesNotThrow(
-                () -> game.startNewGame("katte")
+                () -> game.startNewRound("katte")
         );
     }
 
@@ -41,7 +41,7 @@ class GameTest {
     @DisplayName("next amount of letters")
     void WordToGuessIncreased(){
         String fiveLetterWord = "hallo";
-        game.startNewGame(fiveLetterWord);
+        game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
       assertEquals(game.getWordLength(),6);
     }
@@ -50,10 +50,10 @@ class GameTest {
     @DisplayName("the user cant start a new game when the last round is still playing")
     void RoundIsStillPlaying(){
         String fiveLetterWord = "hallo";
-        game.startNewGame(fiveLetterWord);
+        game.startNewRound(fiveLetterWord);
         assertThrows(
                 RoundPlayingExeption.class,
-                () ->  game.startNewGame("welkom")
+                () ->  game.startNewRound("welkom")
         );
     }
 
@@ -72,7 +72,7 @@ class GameTest {
     @DisplayName("the user cant make a new guess when the round has already ended")
     void RoundHasBeenEnded(){
         String fiveLetterWord = "hallo";
-        game.startNewGame(fiveLetterWord);
+        game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
         assertThrows(
                 GameEndedException.class,
@@ -84,7 +84,7 @@ class GameTest {
     @MethodSource("scorePerRound")
     @DisplayName("calculate score based on the amount of attempts in a round")
     void correctScore(int amountOfAttempts, int expectedScore) {
-        game.startNewGame("woord");
+        game.startNewRound("woord");
 
         for (int i = 0; i < amountOfAttempts - 1; i++) {
             game.guess("words");
@@ -92,17 +92,17 @@ class GameTest {
 
         game.guess("woord");
 
-        assertEquals(game.getScore(), expectedScore);
+        assertEquals(expectedScore, game.getScore());
     }
 
 
     static Stream<Arguments> scorePerRound() {
         return Stream.of(
-                Arguments.of(1, 30),
-                Arguments.of(2, 25),
-                Arguments.of(3, 20),
-                Arguments.of(4, 15),
-                Arguments.of(5, 10)
+                Arguments.of(1, 25),
+                Arguments.of(2, 20),
+                Arguments.of(3, 15),
+                Arguments.of(4, 10),
+                Arguments.of(5, 5)
         );
     }
 
