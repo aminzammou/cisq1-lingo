@@ -41,8 +41,8 @@ public class TrainerService {
         return progress;
     }
 
-    public Progress guess(Long id, String guess) throws LostGameException {
-        Game game = this.gameRepository.findById(id).orElseThrow(() -> new RuntimeException("Game Not found"));
+    public Progress guess(Long id, String guess) throws LostGameException, GameNotFoundException {
+        Game game = this.gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException("Game Not found"));
         if (game.getCurrentRound() != null){
             if (game.getStatus().equals(GameState.ELIMINATED)){
                 throw new LostGameException("You cant play, you lost this game !");

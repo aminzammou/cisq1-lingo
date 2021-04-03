@@ -37,8 +37,8 @@ class TrainerServiceTest {
     @Test
     @DisplayName("Game has not been found exception")
     void unsupportedLength() {
-        assertThrows(RuntimeException.class, () -> service.startNewRound(2L));
-        assertThrows(RuntimeException.class, () -> service.guess(2L," "));
+        assertThrows(GameNotFoundException.class, () -> service.startNewRound(2L));
+        assertThrows(GameNotFoundException.class, () -> service.guess(2L," "));
     }
 
     @Test
@@ -61,7 +61,7 @@ class TrainerServiceTest {
         for (int i = 0; i < 6 - 1; i++) {
             service.guess(0l,"board");
         }
-        assertThrows(GameEndedException.class, () -> service.guess(0l,"board"));
+        assertThrows(LostGameException.class, () -> service.guess(0l,"board"));
     }
 
 
