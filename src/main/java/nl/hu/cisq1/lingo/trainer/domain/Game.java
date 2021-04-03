@@ -18,7 +18,6 @@ public class Game implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-
     private int score;
 
     @OneToMany
