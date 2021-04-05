@@ -62,3 +62,30 @@ of het nodig is om die data op te slaan.
 
 In dit project wordt gebruik gemaakt van github secrets om gevoelige gegevens niet zomaar op internet te delen,
 wanneer deze gegevens op internet staan kan iemand hier gebruik van gaan maken.
+
+## A6:2017 Security Misconfiguration
+
+### Description
+Wanneer we onze project opzetten maken we gebruik van verschillende soorten software,
+na het installeren van deze software hebben we vaak software mee geïnstalleerd die we eigenlijk niet nodig hebben.
+Veel van die mee geïnstalleerde software heeft kwetsbaarheden zoals we in A9 hebben gelezen.
+
+Ook maken we vaak gebruik van standaard instellingen zoals, de inloggegevens van de admin deze zijn vaak admin, admin.
+Dit maakt het voor een attacker makkelijker om binnen te komen.
+### Risk
+Het is belangrijk dat we de standaard instellingen niet hetzelfde laten blijven als wanneer deze
+out of the box was, omdat een attacker anders de standaard gegevens makkelijk kan achterhallen.
+
+Errors kunnen ook een groot risico zijn, omdat er in de standaard errors soms te veel info terug
+gegeven wordt zoals: de software en de versie daar van.
+Een attacker kan op basis van deze informatie, kwetsbaarheden vinden van de software die we gebruiken zoals we al 
+gelezen hebben in A9.
+### Counter-measures
+-   Installeer alleen wat nodig is en geen extra's.
+-   Verander de standaart gegevens bij het installeren zoals: de admin inlog gegevens.
+-   Dont over share info: Laat geen belangrijke info zoals de versie nummer en software 
+die gebruikt wordt zien in de errors, maar alleen het nodige.
+    
+In dit project, maken wij gebruik van exceptionHandelers, deze zorgen er voor dat de out of the box versie
+overschreven wordt en er gebruik wordt gemaakt van de gene ik gemaakt heb.
+Dit zorgt ervoor dat er alleen de nodige informatie laten zien wordt en niet het onnodige.
