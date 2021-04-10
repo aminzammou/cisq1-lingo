@@ -63,7 +63,7 @@ class GameTest {
         String fiveLetterWord = "hallo";
 
         assertThrows(
-                GameHasNotBeenStartedExeption.class,
+                RoundHasNotBeenStartedExeption.class,
                 () ->  game.guess(fiveLetterWord)
         );
     }
