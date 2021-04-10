@@ -31,10 +31,14 @@ public class TrainerServiceIntegrationTest {
     @MockBean
     private SpringWordRepository repository;
 
-//    @BeforeEach
-//    void setup() {
-//
-//    }
+    private Long id;
+
+    @BeforeEach
+    void setup() throws GameNotFoundException, LostGameException {
+        when(repository.findRandomWordByLength(5)).thenReturn(Optional.of(new Word("baard")));
+        id = trainerService.startNewGame();
+        trainerService.startNewRound(id);
+    }
 
     @Test
     @DisplayName("Starting a new round")
@@ -51,10 +55,6 @@ public class TrainerServiceIntegrationTest {
     @DisplayName("winning a new round")
     void winningAnRound() throws LostGameException, GameNotFoundException {
 
-        when(repository.findRandomWordByLength(5)).thenReturn(Optional.of(new Word("baard")));
-
-        Long id = trainerService.startNewGame();
-        trainerService.startNewRound(id);
         Progress progress = trainerService.guess(id,"baard");
 
         assertEquals(GameState.WON,progress.getStatus());
@@ -65,10 +65,7 @@ public class TrainerServiceIntegrationTest {
     @DisplayName("losing a new round")
     void losingAnRound() throws LostGameException, GameNotFoundException {
 
-        when(repository.findRandomWordByLength(5)).thenReturn(Optional.of(new Word("baard")));
 
-        Long id = trainerService.startNewGame();
-        trainerService.startNewRound(id);
         Progress progress = null;
         for(int i = 0; i < 5; i++) {
             progress = trainerService.guess(id,"board");
