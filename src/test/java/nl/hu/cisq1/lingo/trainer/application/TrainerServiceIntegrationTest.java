@@ -73,4 +73,14 @@ public class TrainerServiceIntegrationTest {
         assertEquals(GameState.ELIMINATED,progress.getStatus());
         assertEquals(5,progress.getScore());
     }
+
+    @Test
+    @DisplayName("trying to make a guess in a lost round")
+    void GussingInAnlostRound() throws LostGameException, GameNotFoundException {
+
+        for(int i = 0; i < 5; i++) {
+            trainerService.guess(id,"board");
+        }
+        assertThrows(LostGameException.class, () -> trainerService.guess(id,"board"));
+    }
 }
