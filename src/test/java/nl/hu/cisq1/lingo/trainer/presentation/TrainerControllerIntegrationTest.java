@@ -174,4 +174,58 @@ class TrainerControllerIntegrationTest {
         mockMvc.perform(requestBuilder2)
                 .andExpect(jsonPath("$.errorCode").value("CONFLICT"));
     }
+
+    @Test
+    @DisplayName("The user lost a game")
+    void lostGame() throws Exception {
+
+
+        Game game = new Game();
+        game.startNewRound("baard");
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+        AttemptDTO attemptDTO = new AttemptDTO("beard");
+        String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
+//        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
+        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+
+        String expectedHint = "b.ard";
+
+//        mockMvc.perform(requestBuilder1);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("ELIMINATED")));
+    }
+
+    @Test
+    @DisplayName("making a guess,at a round thats already lost")
+    void guessInAnLostGame() throws Exception {
+
+
+        Game game = new Game();
+        game.startNewRound("baard");
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+        AttemptDTO attemptDTO = new AttemptDTO("beard");
+        String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
+//        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
+        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+
+        String expectedHint = "b.ard";
+
+//        mockMvc.perform(requestBuilder1);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2);
+        mockMvc.perform(requestBuilder2)
+                .andExpect(jsonPath("$.errorCode").value("NOT FOUND"));
+    }
 }
