@@ -32,7 +32,7 @@ public class GlobalExeptionHandler {
 
 
     @ExceptionHandler(RoundPlayingExeption.class)
-    public ResponseEntity<ExceptionResponse> RoundPlayingExeption(LostGameException ex) {
+    public ResponseEntity<ExceptionResponse> RoundPlayingExeption(RoundPlayingExeption ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setErrorCode("CONFLICT");
         exceptionResponse.setErrorMessage(ex.getMessage());
@@ -42,7 +42,7 @@ public class GlobalExeptionHandler {
     }
 
     @ExceptionHandler(RoundHasNotBeenStartedExeption.class)
-    public ResponseEntity<ExceptionResponse> RoundHasNotBeenStartedExeption(LostGameException ex) {
+    public ResponseEntity<ExceptionResponse> RoundHasNotBeenStartedExeption(RoundHasNotBeenStartedExeption ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setErrorCode("CONFLICT");
         exceptionResponse.setErrorMessage(ex.getMessage());

@@ -23,6 +23,7 @@ public class Feedback {
 
     @ElementCollection
     private List<Mark> marks;
+
     private String attempt;
     private String wordToGuess;
 

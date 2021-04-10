@@ -44,7 +44,7 @@ class TrainerServiceTest {
     @Test
     @DisplayName("Game has not been started yet")
     void gameHasNotBeenStartedYet() {
-        assertThrows(GameHasNotBeenStartedExeption.class, () -> service.guess(0L," "));
+        assertThrows(RoundHasNotBeenStartedExeption.class, () -> service.guess(0L," "));
     }
 
     @Test

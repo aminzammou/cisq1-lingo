@@ -2,10 +2,7 @@ package nl.hu.cisq1.lingo.trainer.presentation;
 
 import nl.hu.cisq1.lingo.trainer.application.TrainerService;
 import nl.hu.cisq1.lingo.trainer.domain.Progress;
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameNotFoundException;
-import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedExeption;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import nl.hu.cisq1.lingo.trainer.domain.exception.*;
 import nl.hu.cisq1.lingo.trainer.presentation.dto.AttemptDTO;
 import nl.hu.cisq1.lingo.trainer.presentation.dto.NewGameDTO;
 import org.springframework.http.HttpStatus;
