@@ -2,13 +2,11 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameEndedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundEndedException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class Round {
 
     public String guessing(String guess) {
         if (this.status != GameState.PLAYING) {
-            throw new GameEndedException();
+            throw new RoundEndedException("this round has already been ended");
         }
 
         Feedback feedback = new Feedback(this.wordToGuess, guess);

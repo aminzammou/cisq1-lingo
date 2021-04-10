@@ -1,6 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameEndedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundEndedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +64,7 @@ class RoundTest {
         round.guessing("baner");
 
         assertThrows(
-                GameEndedException.class,
+                RoundEndedException.class,
                 () ->  round.guessing("baner")
         );
     }

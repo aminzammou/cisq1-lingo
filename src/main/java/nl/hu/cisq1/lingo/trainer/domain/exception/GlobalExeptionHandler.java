@@ -50,4 +50,14 @@ public class GlobalExeptionHandler {
 
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(RoundEndedException.class)
+    public ResponseEntity<ExceptionResponse> GameEndedException(RoundEndedException ex) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setErrorCode("CONFLICT");
+        exceptionResponse.setErrorMessage(ex.getMessage());
+        exceptionResponse.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.CONFLICT);
+    }
 }

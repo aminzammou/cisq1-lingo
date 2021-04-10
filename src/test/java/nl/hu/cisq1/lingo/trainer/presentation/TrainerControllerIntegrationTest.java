@@ -87,8 +87,7 @@ class TrainerControllerIntegrationTest {
     @Test
     @DisplayName("making a guess")
     void makingGuess() throws Exception {
-//        when(wordRepository.findRandomWordByLength(5))
-//                .thenReturn(Optional.of(new Word("baard")));
+
 
         Game game = new Game();
         game.startNewRound("baard");
@@ -129,4 +128,50 @@ class TrainerControllerIntegrationTest {
 
     }
 
+    @Test
+    @DisplayName("trying to start a new round while, the game does not exist")
+    void gameNotFound() throws Exception {
+        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/10/round");
+        mockMvc.perform(requestBuilder1)
+                .andExpect(jsonPath("$.errorCode").value("NOT FOUND"));
+
+    }
+
+    @Test
+    @DisplayName("starting a new round, on a game with a still active game going on")
+    void alreadyStartANewRound() throws Exception {
+        when(wordRepository.findRandomWordByLength(5)).thenReturn(Optional.of(new Word("baard")));
+        Game game = new Game();
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+
+
+        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
+        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/round");
+
+        mockMvc.perform(requestBuilder1);
+        mockMvc.perform(requestBuilder2)
+                .andExpect(jsonPath("$.errorCode").value("CONFLICT"));
+    }
+
+    @Test
+    @DisplayName("trying to make a guess, while the game has alresy ended")
+    void roundAlreadyEnded() throws Exception {
+
+
+        Game game = new Game();
+        game.startNewRound("baard");
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+        AttemptDTO attemptDTO = new AttemptDTO("baard");
+        String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
+        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+
+        mockMvc.perform(requestBuilder1);
+        mockMvc.perform(requestBuilder2)
+                .andExpect(jsonPath("$.errorCode").value("CONFLICT"));
+    }
 }

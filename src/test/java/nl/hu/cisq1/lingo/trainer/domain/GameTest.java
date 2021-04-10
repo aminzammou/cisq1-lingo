@@ -75,7 +75,7 @@ class GameTest {
         game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
         assertThrows(
-                GameEndedException.class,
+                RoundEndedException.class,
                 () ->  game.guess(fiveLetterWord)
         );
     }
