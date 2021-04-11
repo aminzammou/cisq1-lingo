@@ -46,15 +46,15 @@ class GameTest {
 
         game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
-        assertEquals(game.getWordLength(),6);
+        assertEquals(6,game.getWordLength());
 
         game.startNewRound(sixLetterWord);
         game.guess(sixLetterWord);
-        assertEquals(game.getWordLength(),7);
+        assertEquals(7,game.getWordLength());
 
         game.startNewRound(sevenLetterWord);
         game.guess(sevenLetterWord);
-        assertEquals(game.getWordLength(),5);
+        assertEquals(5,game.getWordLength());
     }
 
     @Test
