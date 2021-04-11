@@ -13,15 +13,14 @@ class RoundTest {
     @DisplayName("when the game has just started then this function will be called and the first letter will be shown")
     void firstHint() {
         Round round = new Round("baard");
-        assertEquals(round.giveHint(), "b....");
+        assertEquals(round.getHint(), "b....");
     }
 
     @Test
     @DisplayName("when the first guess has been made")
     void firstguess() {
         Round round = new Round("baard");
-        String guess = round.guessing("board");
-        assertEquals(guess, "b.ard");
+        assertEquals("b.ard", round.guessing("board"));
     }
 
     @Test
