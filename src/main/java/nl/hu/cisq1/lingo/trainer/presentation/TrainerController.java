@@ -18,17 +18,16 @@ public class TrainerController {
 
     @PostMapping("/game")
     public NewGameDTO createNewGame() {
-        NewGameDTO newGameDTO = new NewGameDTO(this.service.startNewGame());
-       return newGameDTO;
+        return new NewGameDTO(this.service.startNewGame());
     }
 
     @PostMapping("/game/{id}/round")
-    public Progress createNewRound(@PathVariable Long id) throws GameNotFoundException, LostGameException, RoundPlayingExeption {
+    public Progress createNewRound(@PathVariable Long id) throws GameNotFoundException, LostGameException, RoundPlayingException {
         return service.startNewRound(id);
     }
 
     @PostMapping("/game/{id}/guess")
-    public Progress guess(@PathVariable Long id, @RequestBody AttemptDTO attemptDTO) throws GameNotFoundException, LostGameException, RoundHasNotBeenStartedExeption {
+    public Progress guess(@PathVariable Long id, @RequestBody AttemptDTO attemptDTO) throws GameNotFoundException, LostGameException, RoundHasNotBeenStartedException {
         return service.guess(id,attemptDTO.getAttempt());
     }
 }

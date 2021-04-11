@@ -2,8 +2,8 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedExeption;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -40,7 +40,7 @@ public class Game implements Serializable {
 
         if (getAmountOfRounds() >= 1) {
             if (rounds.get(rounds.size() - 1).getStatus() == GameState.PLAYING) {
-                throw new RoundPlayingExeption();
+                throw new RoundPlayingException();
             }
         }
         Round round = new Round(wordToGuess);
@@ -53,7 +53,7 @@ public class Game implements Serializable {
 
     public Progress guess(String guess) {
         if (getAmountOfRounds() == 0) {
-            throw new RoundHasNotBeenStartedExeption();
+            throw new RoundHasNotBeenStartedException();
         }
 
         Round round = rounds.get(rounds.size() - 1);

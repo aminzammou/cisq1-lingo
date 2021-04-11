@@ -63,7 +63,7 @@ public class Round {
 
     public String giveHint() {
 
-        if (this.history.size() > 0) {
+        if (!this.history.isEmpty()) {
             Feedback feedback = history.get(history.size() - 1);
             this.hint = feedback.getHint(this.hint);
         }

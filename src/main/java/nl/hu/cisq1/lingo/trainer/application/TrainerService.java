@@ -7,7 +7,7 @@ import nl.hu.cisq1.lingo.trainer.domain.GameState;
 import nl.hu.cisq1.lingo.trainer.domain.Progress;
 import nl.hu.cisq1.lingo.trainer.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
-import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingException;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class TrainerService {
                 throw new LostGameException("You cant play, you lost this game !");
             }
             if (game.getStatus().equals(GameState.PLAYING)){
-                throw new RoundPlayingExeption();
+                throw new RoundPlayingException();
             }
         }
 

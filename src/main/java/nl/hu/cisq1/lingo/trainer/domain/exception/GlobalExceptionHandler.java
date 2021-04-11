@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class GlobalExeptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(GameNotFoundException.class)
     public ResponseEntity<ExceptionResponse> GameNotFoundException(GameNotFoundException ex) {
@@ -31,8 +31,8 @@ public class GlobalExeptionHandler {
     }
 
 
-    @ExceptionHandler(RoundPlayingExeption.class)
-    public ResponseEntity<ExceptionResponse> RoundPlayingExeption(RoundPlayingExeption ex) {
+    @ExceptionHandler(RoundPlayingException.class)
+    public ResponseEntity<ExceptionResponse> RoundPlayingExeption(RoundPlayingException ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setErrorCode("CONFLICT");
         exceptionResponse.setErrorMessage(ex.getMessage());
@@ -41,8 +41,8 @@ public class GlobalExeptionHandler {
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(RoundHasNotBeenStartedExeption.class)
-    public ResponseEntity<ExceptionResponse> RoundHasNotBeenStartedExeption(RoundHasNotBeenStartedExeption ex) {
+    @ExceptionHandler(RoundHasNotBeenStartedException.class)
+    public ResponseEntity<ExceptionResponse> RoundHasNotBeenStartedExeption(RoundHasNotBeenStartedException ex) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.setErrorCode("CONFLICT");
         exceptionResponse.setErrorMessage(ex.getMessage());

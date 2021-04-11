@@ -41,14 +41,14 @@ class TrainerServiceTest {
     @Test
     @DisplayName("Game has not been started yet")
     void gameHasNotBeenStartedYet() {
-        assertThrows(RoundHasNotBeenStartedExeption.class, () -> service.guess(0L," "));
+        assertThrows(RoundHasNotBeenStartedException.class, () -> service.guess(0L," "));
     }
 
     @Test
     @DisplayName("Game has already been started")
     void gameHasAlreayStarted() throws GameNotFoundException, LostGameException {
         service.startNewRound(0L);
-        assertThrows(RoundPlayingExeption.class, () -> service.startNewRound(0L));
+        assertThrows(RoundPlayingException.class, () -> service.startNewRound(0L));
     }
 
     @Test
