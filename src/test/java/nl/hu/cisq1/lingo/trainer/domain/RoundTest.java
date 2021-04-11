@@ -18,7 +18,7 @@ class RoundTest {
 
     @Test
     @DisplayName("when the first guess has been made")
-    void firstguess() {
+    void firstGuess() {
         Round round = new Round("baard");
         assertEquals("b.ard", round.guessing("board"));
     }
@@ -32,7 +32,7 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("the usser is still playing a round")
+    @DisplayName("the user is still playing a round")
     void roundStatusIsPlaying() {
         Round round = new Round("baard");
         round.guessing("board");
@@ -64,7 +64,7 @@ class RoundTest {
 
         assertThrows(
                 RoundEndedException.class,
-                () ->  round.guessing("baner")
+                () -> round.guessing("baner")
         );
     }
 

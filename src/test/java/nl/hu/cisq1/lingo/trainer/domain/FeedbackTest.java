@@ -24,13 +24,13 @@ class FeedbackTest {
 
     static Stream<Arguments> feedbackMarks() {
         return Stream.of(
-                Arguments.of("BAARD","BONJE", List.of(CORRECT, ABSENT, ABSENT, ABSENT, ABSENT)),
-                Arguments.of("BAARD","BARST", List.of(CORRECT, CORRECT, PRESENT, ABSENT, ABSENT)),
-                Arguments.of("BAARD","DRAAD", List.of(ABSENT, PRESENT, CORRECT, PRESENT, CORRECT)),
-                Arguments.of("BAARD","BAARD", List.of(CORRECT, CORRECT, CORRECT, CORRECT, CORRECT)),
-                Arguments.of("BAROK","BAARD", List.of(CORRECT, CORRECT, ABSENT, PRESENT, ABSENT)),
-                Arguments.of("BAROK","ZWAAR", List.of(ABSENT, ABSENT, PRESENT, ABSENT, PRESENT)),
-                Arguments.of("AARDEN","APAALM", List.of(CORRECT, ABSENT, PRESENT, ABSENT, ABSENT, ABSENT)),
+                Arguments.of("BAARD", "BONJE", List.of(CORRECT, ABSENT, ABSENT, ABSENT, ABSENT)),
+                Arguments.of("BAARD", "BARST", List.of(CORRECT, CORRECT, PRESENT, ABSENT, ABSENT)),
+                Arguments.of("BAARD", "DRAAD", List.of(ABSENT, PRESENT, CORRECT, PRESENT, CORRECT)),
+                Arguments.of("BAARD", "BAARD", List.of(CORRECT, CORRECT, CORRECT, CORRECT, CORRECT)),
+                Arguments.of("BAROK", "BAARD", List.of(CORRECT, CORRECT, ABSENT, PRESENT, ABSENT)),
+                Arguments.of("BAROK", "ZWAAR", List.of(ABSENT, ABSENT, PRESENT, ABSENT, PRESENT)),
+                Arguments.of("AARDEN", "APAALM", List.of(CORRECT, ABSENT, PRESENT, ABSENT, ABSENT, ABSENT)),
                 Arguments.of("BAROK", "ARARA", List.of(PRESENT, PRESENT, ABSENT, ABSENT, ABSENT))
         );
     }
@@ -54,7 +54,7 @@ class FeedbackTest {
     void wordIsInvalid() {
         assertThrows(
                 InvalidFeedbackException.class,
-                () -> new Feedback("wooorde","woord")
+                () -> new Feedback("wooorde", "woord")
         );
     }
 
@@ -92,14 +92,6 @@ class FeedbackTest {
         Feedback feedbackA = new Feedback("ha", "ha");
         assertTrue(feedbackA.toString().contains("Feedback"));
     }
-//    @Test
-//    @DisplayName("toString contains class name")
-//    void InvalidLenght() {
-//        assertThrows(
-//                InvalidFeedbackException.class,
-//                () -> new Feedback(List.of(CORRECT, CORRECT),"banaan")
-//        );
-//    }
 
     @Test
     @DisplayName("Feedback does not have the same size as the attempt")
@@ -116,16 +108,6 @@ class FeedbackTest {
         assertDoesNotThrow(() -> new Feedback("board", "baard"));
     }
 
-
-
-//    @Test
-//    @DisplayName("Feedback does not have the same size as the attempt")
-//    void validLenght() {
-//        assertDoesNotThrow(
-//                InvalidFeedbackException.class,
-//                () -> new Feedback("woerd", "woord")
-//        );
-//    }
 
     @ParameterizedTest
     @DisplayName("the user guessed some letters of the word")

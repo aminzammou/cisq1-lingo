@@ -18,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -46,41 +47,40 @@ public class TrainerServiceIntegrationTest {
         Long id = trainerService.startNewGame();
         Progress progress = trainerService.startNewRound(id);
 
-        assertEquals(GameState.PLAYING,progress.getStatus());
-        assertEquals(0,progress.getScore());
-        assertEquals(5,progress.getHint().length());
+        assertEquals(GameState.PLAYING, progress.getStatus());
+        assertEquals(0, progress.getScore());
+        assertEquals(5, progress.getHint().length());
     }
 
     @Test
     @DisplayName("winning a new round")
     void winningAnRound() throws LostGameException, GameNotFoundException {
 
-        Progress progress = trainerService.guess(id,"baard");
+        Progress progress = trainerService.guess(id, "baard");
 
-        assertEquals(GameState.WON,progress.getStatus());
-        assertEquals(25,progress.getScore());
+        assertEquals(GameState.WON, progress.getStatus());
+        assertEquals(25, progress.getScore());
     }
 
     @Test
     @DisplayName("losing a new round")
     void losingAnRound() throws LostGameException, GameNotFoundException {
 
-
         Progress progress = null;
-        for(int i = 0; i < 5; i++) {
-            progress = trainerService.guess(id,"board");
+        for (int i = 0; i < 5; i++) {
+            progress = trainerService.guess(id, "board");
         }
-        assertEquals(GameState.ELIMINATED,progress.getStatus());
-        assertEquals(5,progress.getScore());
+        assertEquals(GameState.ELIMINATED, progress.getStatus());
+        assertEquals(5, progress.getScore());
     }
 
     @Test
     @DisplayName("trying to make a guess in a lost round")
-    void GussingInAnlostRound() throws LostGameException, GameNotFoundException {
+    void GussyingInAnLostRound() throws LostGameException, GameNotFoundException {
 
-        for(int i = 0; i < 5; i++) {
-            trainerService.guess(id,"board");
+        for (int i = 0; i < 5; i++) {
+            trainerService.guess(id, "board");
         }
-        assertThrows(LostGameException.class, () -> trainerService.guess(id,"board"));
+        assertThrows(LostGameException.class, () -> trainerService.guess(id, "board"));
     }
 }

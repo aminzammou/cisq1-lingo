@@ -2,13 +2,18 @@ package nl.hu.cisq1.lingo.trainer.application;
 
 import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
-import nl.hu.cisq1.lingo.trainer.domain.exception.*;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameNotFoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.LostGameException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingException;
 import nl.hu.cisq1.lingo.words.application.WordService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class TrainerServiceTest {
     WordService wordService;
@@ -35,30 +40,30 @@ class TrainerServiceTest {
     @DisplayName("Game has not been found exception")
     void unsupportedLength() {
         assertThrows(GameNotFoundException.class, () -> service.startNewRound(2L));
-        assertThrows(GameNotFoundException.class, () -> service.guess(2L," "));
+        assertThrows(GameNotFoundException.class, () -> service.guess(2L, " "));
     }
 
     @Test
     @DisplayName("Game has not been started yet")
     void gameHasNotBeenStartedYet() {
-        assertThrows(RoundHasNotBeenStartedException.class, () -> service.guess(0L," "));
+        assertThrows(RoundHasNotBeenStartedException.class, () -> service.guess(0L, " "));
     }
 
     @Test
     @DisplayName("Game has already been started")
-    void gameHasAlreayStarted() throws GameNotFoundException, LostGameException {
+    void gameHasAlreadyStarted() throws GameNotFoundException, LostGameException {
         service.startNewRound(0L);
         assertThrows(RoundPlayingException.class, () -> service.startNewRound(0L));
     }
 
     @Test
     @DisplayName("Game has already been ended")
-    void gameHasAlreayBeenEnded() throws GameNotFoundException, LostGameException {
+    void gameHasAlreadyBeenEnded() throws GameNotFoundException, LostGameException {
         service.startNewRound(0L);
         for (int i = 0; i < 6 - 1; i++) {
-            service.guess(0l,"board");
+            service.guess(0l, "board");
         }
-        assertThrows(LostGameException.class, () -> service.guess(0l,"board"));
+        assertThrows(LostGameException.class, () -> service.guess(0l, "board"));
     }
 
 

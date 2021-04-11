@@ -1,6 +1,9 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 
 import javax.persistence.ElementCollection;
@@ -61,7 +64,7 @@ public class Feedback {
                     markList.set(i, Mark.ABSENT);
                 }
             }
-         }
+        }
 
         return markList;
     }

@@ -31,7 +31,6 @@ public class Round {
     private List<Feedback> history;
 
 
-
     public Round(String wordToGuess) {
         this.wordToGuess = wordToGuess;
         this.roundNumber = 0;

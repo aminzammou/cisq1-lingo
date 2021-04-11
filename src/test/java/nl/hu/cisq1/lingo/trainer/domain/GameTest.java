@@ -1,6 +1,9 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import nl.hu.cisq1.lingo.trainer.domain.exception.*;
+import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundEndedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,13 +19,13 @@ class GameTest {
     Game game;
 
     @BeforeEach
-    void createGame(){
+    void createGame() {
         game = new Game();
     }
 
     @Test
     @DisplayName("incorrect amount of letters in the word to guess")
-    void wordToGuessInvalidLenght(){
+    void wordToGuessInvalidLength() {
         assertThrows(
                 InvalidWordLength.class,
                 () -> game.startNewRound("kat")
@@ -31,7 +34,7 @@ class GameTest {
 
     @Test
     @DisplayName("correct amount of letters in the word to guess")
-    void wordToGuessValidLenght(){
+    void wordToGuessValidLength() {
         assertDoesNotThrow(
                 () -> game.startNewRound("katte")
         );
@@ -39,55 +42,55 @@ class GameTest {
 
     @Test
     @DisplayName("next amount of letters")
-    void WordToGuessIncreased(){
-        String fiveLetterWord = "hallo";
-        String sixLetterWord = "halloo";
-        String sevenLetterWord = "hallooo";
+    void WordToGuessIncreased() {
+        String fiveLetterWord = "bosje";
+        String sixLetterWord = "bossen";
+        String sevenLetterWord = "oerwoud";
 
         game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
-        assertEquals(6,game.getWordLength());
+        assertEquals(6, game.getWordLength());
 
         game.startNewRound(sixLetterWord);
         game.guess(sixLetterWord);
-        assertEquals(7,game.getWordLength());
+        assertEquals(7, game.getWordLength());
 
         game.startNewRound(sevenLetterWord);
         game.guess(sevenLetterWord);
-        assertEquals(5,game.getWordLength());
+        assertEquals(5, game.getWordLength());
     }
 
     @Test
     @DisplayName("the user cant start a new game when the last round is still playing")
-    void RoundIsStillPlaying(){
+    void RoundIsStillPlaying() {
         String fiveLetterWord = "hallo";
         game.startNewRound(fiveLetterWord);
         assertThrows(
                 RoundPlayingException.class,
-                () ->  game.startNewRound("welkom")
+                () -> game.startNewRound("welkom")
         );
     }
 
     @Test
     @DisplayName("the user cant guess a word when a game has not been started yet")
-    void gameHasNotBeenStartedYed(){
+    void gameHasNotBeenStartedYed() {
         String fiveLetterWord = "hallo";
 
         assertThrows(
                 RoundHasNotBeenStartedException.class,
-                () ->  game.guess(fiveLetterWord)
+                () -> game.guess(fiveLetterWord)
         );
     }
 
     @Test
     @DisplayName("the user cant make a new guess when the round has already ended")
-    void RoundHasBeenEnded(){
+    void RoundHasBeenEnded() {
         String fiveLetterWord = "hallo";
         game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
         assertThrows(
                 RoundEndedException.class,
-                () ->  game.guess(fiveLetterWord)
+                () -> game.guess(fiveLetterWord)
         );
     }
 

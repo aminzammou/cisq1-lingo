@@ -21,11 +21,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasLength;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 
 @Import(CiTestConfiguration.class)
@@ -46,12 +46,7 @@ class TrainerControllerIntegrationTest {
     @Test
     @DisplayName("creating a new game")
     void startNewGame() throws Exception {
-        when(wordRepository.findRandomWordByLength(5))
-                .thenReturn(Optional.of(new Word("baard")));
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trainer/game");
-
-
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
 
@@ -94,13 +89,11 @@ class TrainerControllerIntegrationTest {
                 .thenReturn(Optional.of(game));
         AttemptDTO attemptDTO = new AttemptDTO("beard");
         String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
-//        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
-        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
 
         String expectedHint = "b.ard";
 
-//        mockMvc.perform(requestBuilder1);
-        mockMvc.perform(requestBuilder2)
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("PLAYING")))
                 .andExpect(jsonPath("$.score", is(25)))
@@ -154,9 +147,8 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("trying to make a guess, while the game has alresy ended")
+    @DisplayName("trying to make a guess, while the game has already ended")
     void roundAlreadyEnded() throws Exception {
-
 
         Game game = new Game();
         game.startNewRound("baard");
@@ -185,25 +177,20 @@ class TrainerControllerIntegrationTest {
                 .thenReturn(Optional.of(game));
         AttemptDTO attemptDTO = new AttemptDTO("beard");
         String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
-//        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
-        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
 
-        String expectedHint = "b.ard";
-
-//        mockMvc.perform(requestBuilder1);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2)
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("ELIMINATED")));
     }
 
     @Test
-    @DisplayName("making a guess,at a round thats already lost")
+    @DisplayName("making a guess,at a round that's already lost")
     void guessInAnLostGame() throws Exception {
-
 
         Game game = new Game();
         game.startNewRound("baard");
@@ -212,18 +199,14 @@ class TrainerControllerIntegrationTest {
                 .thenReturn(Optional.of(game));
         AttemptDTO attemptDTO = new AttemptDTO("beard");
         String guessBody = new ObjectMapper().writeValueAsString(attemptDTO);
-//        RequestBuilder requestBuilder1 = MockMvcRequestBuilders.post("/trainer/game/0/round");
-        RequestBuilder requestBuilder2 = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trainer/game/0/guess").contentType(MediaType.APPLICATION_JSON).content(guessBody);
 
-        String expectedHint = "b.ard";
-
-//        mockMvc.perform(requestBuilder1);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2);
-        mockMvc.perform(requestBuilder2)
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder);
+        mockMvc.perform(requestBuilder)
                 .andExpect(jsonPath("$.errorCode").value("NOT FOUND"));
     }
 }

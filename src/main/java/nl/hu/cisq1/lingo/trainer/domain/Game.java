@@ -7,7 +7,10 @@ import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,18 +88,19 @@ public class Game implements Serializable {
     }
 
 
-    public Round getCurrentRound(){
-        if (rounds.isEmpty()){
+    public Round getCurrentRound() {
+        if (rounds.isEmpty()) {
             return null;
-        }else{
+        } else {
             return rounds.get(rounds.size() - 1);
         }
     }
-    public GameState getStatus(){
+
+    public GameState getStatus() {
         return getCurrentRound().getStatus();
     }
 
     private Progress showProgress() {
-        return new Progress(id,this.score,getAmountOfRounds(),getStatus(),getCurrentRound().getHistory(),currentHint);
+        return new Progress(id, this.score, getAmountOfRounds(), getStatus(), getCurrentRound().getHistory(), currentHint);
     }
 }
