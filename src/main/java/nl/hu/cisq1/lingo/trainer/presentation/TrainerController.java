@@ -5,10 +5,7 @@ import nl.hu.cisq1.lingo.trainer.domain.Progress;
 import nl.hu.cisq1.lingo.trainer.domain.exception.*;
 import nl.hu.cisq1.lingo.trainer.presentation.dto.AttemptDTO;
 import nl.hu.cisq1.lingo.trainer.presentation.dto.NewGameDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/trainer")

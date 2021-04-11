@@ -86,7 +86,7 @@ public class Game implements Serializable {
 
 
     public Round getCurrentRound(){
-        if (rounds.size() == 0){
+        if (rounds.isEmpty()){
             return null;
         }else{
             return rounds.get(rounds.size() - 1);
