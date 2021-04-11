@@ -49,19 +49,15 @@ class FeedbackTest {
         assertFalse(feedback.isWordGuessed());
     }
 
-//    @Test
-//    @DisplayName("word is invalid if all letters are invalid")
-//    void wordIsInvalid() {
-//        Feedback feedback = new Feedback("hhahah","woord");
-//        assertTrue(feedback.isWordInvalid());
-//    }
+    @Test
+    @DisplayName("word is invalid if all letters are invalid")
+    void wordIsInvalid() {
+        assertThrows(
+                InvalidFeedbackException.class,
+                () -> new Feedback("wooorde","woord")
+        );
+    }
 
-//    @Test
-//    @DisplayName("word is valid if not all letters are marked as invalid")
-//    void wordIsValid() {
-//        Feedback feedback = new Feedback("boeke", "woord");
-//        assertFalse(feedback.isWordInvalid());
-//    }
 
     @Test
     @DisplayName("feedback is different if values different")

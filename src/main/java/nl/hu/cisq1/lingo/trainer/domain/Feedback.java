@@ -39,7 +39,7 @@ public class Feedback {
         List<Mark> markList = new ArrayList<>();
 
         if (answerLetters.length != attemptLetters.length) {
-            isWordInvalid();
+            throw new InvalidFeedbackException();
         }
 
         List<String> presentLetters = new ArrayList<>();
@@ -70,10 +70,6 @@ public class Feedback {
     public boolean isWordGuessed() {
         return this.marks.stream()
                 .allMatch(Mark.CORRECT::equals);
-    }
-
-    public void isWordInvalid() {
-        throw new InvalidFeedbackException();
     }
 
     public String getHint(String oldHint) {

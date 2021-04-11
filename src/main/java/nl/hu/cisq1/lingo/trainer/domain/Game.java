@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
-import nl.hu.cisq1.lingo.trainer.domain.exception.GameHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidWordLength;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundHasNotBeenStartedExeption;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundPlayingExeption;
@@ -48,7 +47,6 @@ public class Game implements Serializable {
         this.rounds.add(round);
         getNextWordLength();
         currentHint = round.getHint();
-        System.out.println(this.rounds.size());
 
         return showProgress();
     }
@@ -86,12 +84,8 @@ public class Game implements Serializable {
         return rounds.size();
     }
 
-//    public List<String> getAttempts() {
-//        return this.rounds.get(getAmountOfRounds() - 1).getAttempts();
-//    }
 
     public Round getCurrentRound(){
-//        System.out.println(this.rounds.size());
         if (rounds.size() == 0){
             return null;
         }else{

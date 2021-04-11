@@ -41,9 +41,20 @@ class GameTest {
     @DisplayName("next amount of letters")
     void WordToGuessIncreased(){
         String fiveLetterWord = "hallo";
+        String sixLetterWord = "halloo";
+        String sevenLetterWord = "hallooo";
+
         game.startNewRound(fiveLetterWord);
         game.guess(fiveLetterWord);
-      assertEquals(game.getWordLength(),6);
+        assertEquals(game.getWordLength(),6);
+
+        game.startNewRound(sixLetterWord);
+        game.guess(sixLetterWord);
+        assertEquals(game.getWordLength(),7);
+
+        game.startNewRound(sevenLetterWord);
+        game.guess(sevenLetterWord);
+        assertEquals(game.getWordLength(),5);
     }
 
     @Test
